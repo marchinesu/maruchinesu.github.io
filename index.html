@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1201_2ict</title>
+
+    <style>
+        body {
+            background-color: rgb(242, 242, 243);
+            margin: 0;
+        }
+
+        /* タイトル  */
+        /* ▼ タイトル画像 */
+        .title-area {
+            height: 250px;
+            /* 背景画像の高さ */
+            /*タイトル文字を中央に配置する*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            /* ぼかしレイヤー用 */
+            position: relative;
+            /*アニメーション追加*/
+            animation: fadeSwitch 25s infinite;
+        }
+
+        /* ▼ ぼかしレイヤー */
+        .title-area::after {
+            content: "";
+            /*空の要素を作成*/
+            position: absolute;
+            /*重ねる*/
+            inset: 0;
+            /*titleエリアに上下左右くっつく*/
+            background: rgba(255, 255, 255, 0.4);
+            /* 白く薄くする */
+            backdrop-filter: blur(6px);
+            /* ぼかし */
+        }
+
+        /* ▼ タイトル文字 */
+        .title-area h1 {
+            color: rgb(37, 96, 163);
+            font-size: 48px;
+            z-index: 1;
+            /* 文字をぼかしレイヤーより上に表示 */
+            text-shadow: 0 0 20px rgb(255, 255, 255);
+            margin: 0;
+        }
+
+        /* ▼ 背景スライドショー用アニメーション */
+        @keyframes fadeSwitch {
+            0% {
+                background-image: url('./img/class1.jpg');
+            }
+
+            33% {
+                background-image: url('./img/class3.jpg');
+            }
+
+            66% {
+                background-image: url('./img/class4.jpg');
+            }
+
+            100% {
+                background-image: url('./img/class1.jpg');
+            }
+
+            /* ループ用 */
+        }
+
+        /*メニュー*/
+        /* ▼ メニューリストのスタイル */
+        ul {
+            list-style: none;
+            /*・を消す*/
+            margin: 20px;
+            /*他との間隔*/
+            padding: 0;
+            display: flex;
+            /* 均等配置 */
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+            /* ← 横幅が足りなくなったら自動で折り返す */
+            gap: 10px;
+        }
+
+        /* メニューリストの内容（通常時） */
+        ul li a {
+            /* 文字の中央寄せ */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* 文字 */
+            width: 150px;
+            height: 50px;
+            font-size: 20px;
+            text-decoration: none;
+            color: white;
+            background: rgb(37, 96, 163);
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        /* ▼ hover（カーソルを乗せた時） */
+        ul li a:hover {
+            background: rgb(171, 210, 255);
+        }
+
+        /* ▼ active（クリックした時） */
+        ul li a:active {
+            background: rgb(255, 231, 93);
+        }
+ 
+        /* ▼ focus（キーボード操作用） */
+/*      
+            ul li a:focus {
+            outline: 2px solid rgb(37, 96, 163);
+        } 
+*/
+
+        .disabled-link {
+            /* 色を変える */            
+            background: gray;
+            /* マウスカーソルを「禁止」マークに */
+            cursor: not-allowed;
+            /* クリックできなくする */
+            pointer-events: none;
+        }
+
+        /* お知らせ欄 */
+        .news-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 30px 0 10px 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .news-title::after {
+            content: "▼";
+            margin-left: 8px;
+            transition: 0.2s;
+        }
+
+        .news-title:hover {
+            color: rgb(171, 210, 255);
+        }
+
+        /* お知らせ本体 */
+        .news-box {
+            margin: 0 20px;
+            border-left: 4px solid rgb(37, 96, 163);
+            padding-left: 10px;
+        }
+
+        .news-content {
+            display: none;
+            padding: 10px 0;
+            /* 最大の高さ */           
+            max-height: 200px;
+            /* 内容が多い時だけ縦スクロール */ 
+            overflow-y: auto;
+            background-color: rgb(226, 226, 226);
+        }
+
+        /* ▼ 詳細部分（チェックされた時） */
+        #news-toggle:checked+.news-title+.news-content {
+            display: block;
+        }
+
+        #news-toggle:checked+.news-title::after {
+            content: "▲";
+        }
+
+        /* ヘッダー */
+        header {
+            background: rgb(37, 96, 163);
+            color: white;
+            text-align: center;
+            padding: 0px 10px;
+        }
+
+        .sitemap-button {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            cursor: pointer;
+            color: white;
+            font-size: 16px;
+            z-index: 2
+        }
+
+        .sitemap-button::after {
+            content: "▼";
+            margin-left: 8px;
+            transition: 0.2s;
+        }
+
+        /* ▼ 矢印変化 */
+        #sitemap-toggle:checked+.sitemap-button::after {
+            content: " ▲";
+        }
+
+        /* 通常 */
+        .sitemap-content {
+            display: none;
+            background: white;
+            border-bottom: 2px solid rgb(37, 96, 163);
+            padding: 10px 20px;
+            width: 200px;
+            position: absolute;
+            z-index: 2;
+            right: 0px;
+            top: 25px;
+        }
+
+
+        /* ▼ 開く時 */
+        #sitemap-toggle:checked~.sitemap-content {
+            display: block;
+        }
+
+        .sitemap-content a {
+            color: rgb(37, 96, 163);
+            text-decoration: none;
+        }
+
+        .sitemap-content a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* フッター */
+        footer {
+            background: rgb(37, 96, 163);
+            /* 青 */
+            color: white;
+            /* 文字は白 */
+            text-align: center;
+            /* 中央寄せ */
+            padding: 20px 0;
+            /* 上下余白 */
+            margin-top: 40px;
+            /* 本文との間隔 */
+        }
+
+        /* サブタイトル */
+        .subtitle {
+            font-size: 28px;
+            font-weight: bold;
+
+            margin: 30px 0 10px 20px;
+
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            border-left: 4px solid rgb(37, 96, 163);
+            padding-left: 10px;
+
+            transition: 0.2s;
+        }
+
+        .to-top {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: rgb(37, 96, 163);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            z-index: 5;
+        }
+
+        .to-top:active {
+            transform: scale(0.9);
+        }
+    </style>
+
+</head>
+
+
+
+<body>
+
+    <!-- ヘッダー -->
+    <header id="cr1">
+        2025/12/2 演習
+        <input type="checkbox" id="sitemap-toggle" hidden>
+
+        <!-- サイトマップボタン -->
+        <label for="sitemap-toggle" class="sitemap-button">サイトマップ </label>
+
+        <!-- ▼ サイトマップ内容（クリックで開閉） -->
+        <div class="sitemap-content">
+            <p><a href="#cr1">トップページ</a></p>
+            <p><a href="#cr2">概要</a></p>
+            <p><a href="#cr3">訓練内容</a></p>
+            <p><a href="#cr4">施設案内</a></p>
+            <p><a href="#cr5">利用者の声</a></p>
+            <p><a href="#cr6">事業主の方へ</a></p>
+            <p><a href="#cr7">お知らせ</a></p>
+            <p><a href="#cr8">他の施設</a></p>
+        </div>
+    </header>
+
+    <!-- タイトルエリア -->
+    <div class="title-area">
+        <h1 id="cr1">ICTエンジニア科</h1>
+    </div>
+    <!-- メニュー -->
+    <ul>
+        <li><a href="first.html" id="cr2">概要</a></li>
+        <li><a href="class.html" id="cr3">訓練内容</a></li>
+        <li><a href="" class="disabled-link" id="cr4">施設案内</a></li>
+        <li><a href="" class="disabled-link" id="cr5">利用者の声</a></li>
+        <li><a href="" class="disabled-link" id="cr6">事業主の方へ</a></li>
+    </ul>
+
+
+    <!-- <p>   <img src="./img/class6.jpg" alt="写真" width="100%" height="150"></p> -->
+
+    <h2 cl
+    ass="subtitle">重要なお知らせ</h2>
+    <pre
+        style="margin-left: 20px; background-color: rgb(226, 226, 226); padding: 20px; margin: 20px;">最新のお知らせはありません</pre>
+
+
+    <!-- ▼ お知らせ欄 -->
+    <div class="news-box">
+
+        <!-- チェックボックス（非表示） -->
+        <input type="checkbox" id="news-toggle" hidden>
+
+
+
+        <!-- 見出し（クリックで開閉） -->
+        <label for="news-toggle" class="news-title" id="cr7">お知らせ</label>
+
+        <!-- ▼ 開閉されるコンテンツ -->
+        <div class="news-content">
+            <p><a href="./news1.html">・ 令和７年１１月１７日（月）毎日新聞　朝刊にて、ポリテクセンター福岡が紹介されました！</a></p>
+            <p>・ ICTエンジニア科 2025年募集開始しました</p>
+            <p>・ 年末年始のお知らせを更新しました</p>
+            <p>・ 令和７年度第1回福岡県独立行政法人高齢・障害・求職者雇用支援機構運営協議会開催概要を掲載しました。</p>
+            <p>・ 令和７年親子モノづくり体験教室を開催しました（開催の様子をご報告します）</p>
+            <p>・ ８月２３日（土）に当センターで親子モノづくり体験教室を開催します。
+                詳細は、こちらにてご確認ください。（親子モノづくり体験教室のページにリンクしています）<br>※終了しました。９月上旬に開催概要を掲載しておりますので、併せてご確認ください。</p>
+        </div>
+    </div>
+
+    <!-- 他のポリテク施設 -->
+    <h2 class="subtitle" id="cr8">他の施設（外部リンク 未連携）</h2>
+    <p style="margin-left: 20px;"><a href="" target="_blank">福岡支部</a></p>
+    <p style="margin-left: 20px;"><a href="" target="_blank">ポリテクセンター飯塚</a></p>
+    <p style="margin-left: 20px;"><a href="" target="_blank">九州ポリテクカレッジ</a></p>
+
+    <a href="#" class="to-top">▲ 先頭に戻る</a>
+
+    <!-- フッター -->
+    <footer>
+        2025 ICTエンジニア科 / 職業訓練校
+    </footer>
+
+</body>
+
+</html>
